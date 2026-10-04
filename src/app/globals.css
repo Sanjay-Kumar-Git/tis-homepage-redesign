@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens. Brand colours sampled from tis.edu.in screenshots (verify with DevTools eyedropper). */
+:root {
+  --bg: #ffffff;
+  --surface: #f8f4f0;
+  --fg: #171717;
+  --muted: #4b5563;
+  --line: #e5e0da;
+  --primary: #b8002a;
+  --primary-fg: #ffffff;
+  --primary-text: #b8002a;
+  --accent: #62bdb5;
+  --accent-text: #23766f; /* darkened teal: 5.4:1 on white, passes WCAG AA for text */
+  --ink: #0a0a0a;
+  --ink-fg: #ffffff;
+  --gold: #c9a45c;
+  --focus: #0a0a0a;
+}
+
+.dark {
+  --bg: #0b1020;
+  --surface: #121a33;
+  --fg: #e8eaf0;
+  --muted: #a7afc2;
+  --line: #243055;
+  --primary-text: #ff6b86; /* lighter crimson for text on dark surfaces */
+  --accent-text: #7fd6ce;
+  --ink: #ffffff;
+  --ink-fg: #0b1020;
+  --focus: #ffffff;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-text: var(--primary-text);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-ink: var(--ink);
+  --color-ink-fg: var(--ink-fg);
+  --color-gold: var(--gold);
+  --font-display: var(--font-barlow);
+  --font-accent: var(--font-playfair);
+  --font-sans: var(--font-dm-sans);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 36s) linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-copy {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    body {
+      transition: none;
+    }
+    .marquee {
+      overflow-x: auto;
+    }
+    .marquee-track {
+      width: max-content;
+      animation: none;
+    }
+    .marquee-copy[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}
